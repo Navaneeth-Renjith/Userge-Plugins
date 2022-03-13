@@ -1,4 +1,4 @@
-""" Bot Pm """
+""" Bot PM """
 
 # Copyright (C) 2020-2022 by UsergeTeam@Github, < https://github.com/UsergeTeam >.
 #
@@ -75,23 +75,23 @@ async def _init():
 
 
 @userge.on_cmd("botpm", about={
-    'header': "Bot Pm handlers like Livegram Bot.",
+    'header': "Bot PM handlers like Livegram Bot.",
     'description': "You can use this command to enable/disable Bot Pm.\n"
                    "You can see all the settings of your bot after enabling "
-                   "bot pm and hit /start in your Bot DM.\n"
-                   "Note: You have to us Bot mode or Dual mode if you want to enable Bot Pm.",
+                   "bot pm and hit /start in your Bot DM.",
+    'note': "You have to use Bot Mode or Dual Mode if you want to enable Bot PM.",
     'usage': "{tr}botpm"})
 async def bot_pm(msg: Message):
-    """ Toggle Bot Pm """
+    """ Toggle Bot PM """
     global BOT_PM  # pylint: disable=global-statement
     if not userge.has_bot:
-        return await msg.err("You have to use Bot mode or Dual mode if you want to enable Bot Pm.")
+        return await msg.err("You have to use Bot Mode or Dual Mode if you want to enable Bot PM.")
     BOT_PM = not BOT_PM
     await SAVED_SETTINGS.update_one(
         {"_id": "BOT_PM"}, {"$set": {"data": BOT_PM}}, upsert=True
     )
     await msg.edit(
-        f"Bot Pm `{'Disabled ❌' if not BOT_PM else 'Enabled ✅'}` Successully.",
+        f"Bot Pm `{'Disabled ❌' if not BOT_PM else 'Enabled ✅'}` Successfully.",
         del_in=5
     )
 
@@ -159,7 +159,7 @@ if userge.has_bot:
             await SAVED_SETTINGS.update_one(
                 {"_id": "BOT_START_TEXT"}, {"$set": {"data": text}}, upsert=True
             )
-            await msg.reply("Custom Bot Pm text Saved Successfully.")
+            await msg.reply("Custom Bot PM text Saved Successfully.")
 
     @bot.on_message(filters.user(userge_id) & ~filters.edited
                     & filters.private & filters.command("pmban"), group=1)
@@ -167,9 +167,9 @@ if userge.has_bot:
         replied = msg.reply_to_message
         user_id = msg.text.split(' ', maxsplit=1)[1] if ' ' in msg.text else ''
         if not (replied or user_id):
-            await msg.reply("reply to user message or give id to Ban.")
+            await msg.reply("Reply to user message or give ID to ban.")
         elif replied and replied.from_user.id == userge_id:
-            await msg.reply("You are trying to Ban yourself!")
+            await msg.reply("You are trying to ban yourself!")
         else:
             if replied:
                 if replied.forward_from:
@@ -183,7 +183,7 @@ if userge.has_bot:
                 try:
                     user = await bot.get_users(int(user_id))
                 except Exception:
-                    return await msg.reply("Invalid User id.")
+                    return await msg.reply("Invalid User ID.")
                 user_id = user.id
             if user_id in _BANNED_USERS:
                 return await msg.reply("You already banned this User.")
@@ -288,7 +288,7 @@ After Adding a var, you can see your media when you start your Bot.
             ]
         )
         if cq.data == "stngs":
-            text = f"Bot Pm - {'Disabled ❌' if not BOT_PM else 'Enabled ✅'}"
+            text = f"Bot PM - {'Disabled ❌' if not BOT_PM else 'Enabled ✅'}"
             btn = [InlineKeyboardButton(text, callback_data="en_dis_bot_pm")]
             mp = settings_markup
             mp.inline_keyboard.insert(0, btn)
@@ -302,7 +302,7 @@ After Adding a var, you can see your media when you start your Bot.
             await SAVED_SETTINGS.update_one(
                 {"_id": "BOT_PM"}, {"$set": {"data": BOT_PM}}, upsert=True
             )
-            text = f"Bot Pm - {'Disabled ❌' if not BOT_PM else 'Enabled ✅'}"
+            text = f"Bot PM - {'Disabled ❌' if not BOT_PM else 'Enabled ✅'}"
             btn = [InlineKeyboardButton(text, callback_data=cq.data)]
             mp = settings_markup
             mp.inline_keyboard.insert(0, btn)
@@ -467,7 +467,7 @@ After Adding a var, you can see your media when you start your Bot.
             return
         replied = msg.reply_to_message
         if not replied:
-            await msg.reply("reply to user message to send reply.")
+            await msg.reply("Reply to user message to send reply.")
         elif replied.from_user.id == userge_id:
             await msg.reply("You are trying to reply yourself!")
         elif msg.forward_from or msg.forward_sender_name or msg.forward_date:
