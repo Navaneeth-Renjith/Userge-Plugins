@@ -17,7 +17,7 @@ TIME_ZONE = pytz.timezone(TZ)
 @userge.on_start
 async def _init():
     if bool(scheduler.get_jobs()):
-        scheeduler.start()
+        scheduler.start()
 
 
 @userge.on_cmd("nightmode", about={
